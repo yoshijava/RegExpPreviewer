@@ -46,7 +46,7 @@ public class RegExpPreviewer extends JFrame implements Runnable {
         Vector<String> result = new Vector<String>();
         Highlighter h = contentToMatch.getHighlighter();
         h.removeAllHighlights();
-        int prevIndex = 0;
+        int prevIndex = -1;
         try {
             Pattern p = Pattern.compile(regexp);
             Matcher m = p.matcher(content);
