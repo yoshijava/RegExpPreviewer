@@ -33,6 +33,7 @@ public class RegExpPreviewer extends JFrame implements Runnable {
 
     private JTextArea initTextArea() {
         contentToMatch.setText("Paste your text here");
+        contentToMatch.setLineWrap(true);
         return contentToMatch;
     }
 
