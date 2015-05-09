@@ -47,6 +47,9 @@ public class RegExpPreviewer extends JFrame implements Runnable {
             Matcher m = p.matcher(content);
             while(m.find()) {
                 String group = m.group();
+                if (group.trim().equals("")) {
+                    continue;
+                }
                 int index = 0;
                 while( (index = content.indexOf(group, prevIndex + 1)) != -1) {
                     h.addHighlight(index, index + group.length(), DefaultHighlighter.DefaultPainter);
