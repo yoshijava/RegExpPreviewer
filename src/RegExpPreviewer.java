@@ -17,7 +17,7 @@ public class RegExpPreviewer extends JFrame implements Runnable {
         Container container = getContentPane();
         // container.setLayout(new BorderLayout());
         container.add( initInputComponent(), BorderLayout.SOUTH);
-        container.add( initTextArea(), BorderLayout.CENTER);
+        container.add( new JScrollPane(initTextArea()), BorderLayout.CENTER);
         container.add( statusLabel, BorderLayout.NORTH);
         regexpField.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
