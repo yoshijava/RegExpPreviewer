@@ -32,6 +32,11 @@ public class RegExpPreviewer extends JFrame implements Runnable {
     private JTextArea initTextArea() {
         contentToMatch.setText("Paste your text here");
         contentToMatch.setLineWrap(true);
+        contentToMatch.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                SwingUtilities.invokeLater(RegExpPreviewer.this);
+            }
+        });
         return contentToMatch;
     }
 
