@@ -4,12 +4,12 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.util.Vector;
 import java.util.concurrent.*;
+import javax.swing.text.*;
 
 public class RegExpPreviewer extends JFrame implements Runnable {
     JLabel statusLabel = new JLabel("Status: Healthy.");
     JTextField regexpField = new JTextField();
     JTextArea contentToMatch = new JTextArea();
-    JTextArea resultArea = new JTextArea();
 
     public RegExpPreviewer() {
         super("RegExp Previewer");
@@ -19,8 +19,6 @@ public class RegExpPreviewer extends JFrame implements Runnable {
         container.add( initInputComponent(), BorderLayout.SOUTH);
         container.add( initTextArea(), BorderLayout.CENTER);
         container.add( statusLabel, BorderLayout.NORTH);
-        resultArea.setSize(100, 10);
-        container.add( resultArea, BorderLayout.EAST);
         regexpField.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
                 SwingUtilities.invokeLater(RegExpPreviewer.this);
@@ -41,21 +39,25 @@ public class RegExpPreviewer extends JFrame implements Runnable {
         String regexp = regexpField.getText();
         String content = contentToMatch.getText();
         Vector<String> result = new Vector<String>();
+        Highlighter h = contentToMatch.getHighlighter();
+        h.removeAllHighlights();
+        int prevIndex = 0;
         try {
             Pattern p = Pattern.compile(regexp);
             Matcher m = p.matcher(content);
             while(m.find()) {
                 String group = m.group();
-                result.add(group);
+                int index = 0;
+                while( (index = content.indexOf(group, prevIndex + 1)) != -1) {
+                    h.addHighlight(index, index + group.length(), DefaultHighlighter.DefaultPainter);
+                    prevIndex = index;
+                }
             }
-            String resultToShow = "";
-            for(String r : result) {
-                resultToShow += (r + "\n");
-            }
-            System.out.println(resultToShow);
-            resultArea.setText(resultToShow);
-
             statusLabel.setText("Status: Healthy.");
+        }
+        catch(BadLocationException ble) {
+            // empty
+            ble.printStackTrace();
         }
         catch(java.util.regex.PatternSyntaxException e) {
             statusLabel.setText("Pattern Syntax Exception.");
