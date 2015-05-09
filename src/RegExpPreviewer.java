@@ -2,7 +2,6 @@ import java.util.regex.*;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import org.jsoup.Jsoup;
 import java.util.Vector;
 import java.util.concurrent.*;
 
