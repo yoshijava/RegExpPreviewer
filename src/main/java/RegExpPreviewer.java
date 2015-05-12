@@ -2,8 +2,6 @@ import java.util.regex.*;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import java.util.Vector;
-import java.util.concurrent.*;
 import javax.swing.text.*;
 
 public class RegExpPreviewer extends JFrame implements Runnable {
@@ -63,7 +61,6 @@ public class RegExpPreviewer extends JFrame implements Runnable {
     public synchronized void run() {
         String regexp = regexpField.getText();
         String content = contentToMatch.getText();
-        Vector<String> result = new Vector<String>();
         contentToMatch.getHighlighter().removeAllHighlights();
         int prevIndex = 0;
         try {
