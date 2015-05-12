@@ -7,40 +7,57 @@ import java.util.concurrent.*;
 import javax.swing.text.*;
 
 public class RegExpPreviewer extends JFrame implements Runnable {
-    JLabel statusLabel = new JLabel("Status: Healthy.");
-    JTextField regexpField = new JTextField();
-    JTextPane contentToMatch = new JTextPane();
-    Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 18);
-    DefaultHighlighter.DefaultHighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+    JLabel statusLabel;
+    JTextField regexpField;
+    JTextPane contentToMatch;
+    JPanel inputPanel;
+    Font font18 = new Font(Font.SANS_SERIF, Font.PLAIN, 18);
+    Font font16 = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
+
+    DefaultHighlighter.DefaultHighlightPainter highlightPainter;
 
     public RegExpPreviewer() {
         super("RegExp Previewer");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        initMembers();
+        registerListener();
+
         Container container = getContentPane();
-        // container.setLayout(new BorderLayout());
-        container.add( initInputComponent(), BorderLayout.SOUTH);
-        container.add( new JScrollPane(initJTextPane()), BorderLayout.CENTER);
-        container.add( statusLabel, BorderLayout.NORTH);
-        regexpField.addKeyListener(new KeyAdapter() {
-            public void keyTyped(KeyEvent e) {
-                SwingUtilities.invokeLater(RegExpPreviewer.this);
-            }
-        });
+        container.add( inputPanel, BorderLayout.SOUTH);
+        container.add( new JScrollPane(contentToMatch), BorderLayout.CENTER);
         setSize(800,600);
         setLocation(100,100);
         setVisible(true);
     }
 
-    private JTextPane initJTextPane() {
+    private void initMembers() {
+        statusLabel = new JLabel("Status: Healthy.");
+        statusLabel.setFont( font16 );
+        regexpField = new JTextField();
+        contentToMatch = new JTextPane();
+        highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
         contentToMatch.setText("Paste your text here");
-        // contentToMatch.setLineWrap(true);
+        contentToMatch.setFont(font18);
+        inputPanel = initInputPanel();
+    }
+
+    private void registerListener() {
         contentToMatch.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
                 SwingUtilities.invokeLater(RegExpPreviewer.this);
             }
         });
-        contentToMatch.setFont(font);
-        return contentToMatch;
+        regexpField.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                SwingUtilities.invokeLater(RegExpPreviewer.this);
+            }
+        });
+        this.addWindowListener( new WindowAdapter() {
+            public void windowOpened( WindowEvent e ) {
+                regexpField.requestFocus();
+            }
+        }); 
     }
 
     public synchronized void run() {
@@ -77,15 +94,14 @@ public class RegExpPreviewer extends JFrame implements Runnable {
         }
     }
 
-    private JPanel initInputComponent() {
+    private JPanel initInputPanel() {
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new BorderLayout());
         JLabel inputLabel = new JLabel(" Input RegExp ");
-        inputLabel.setFont( font );
+        inputLabel.setFont( font18 );
         inputPanel.add( inputLabel, BorderLayout.WEST);
-        regexpField.setFont( font );
+        regexpField.setFont( font18 );
         inputPanel.add(regexpField, BorderLayout.CENTER);
-
         return inputPanel;
     }
 
