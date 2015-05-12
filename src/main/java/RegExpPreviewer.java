@@ -26,7 +26,7 @@ public class RegExpPreviewer extends JFrame implements Runnable {
                 SwingUtilities.invokeLater(RegExpPreviewer.this);
             }
         });
-        setSize(500,400);
+        setSize(800,600);
         setLocation(100,100);
         setVisible(true);
     }
@@ -80,8 +80,12 @@ public class RegExpPreviewer extends JFrame implements Runnable {
     private JPanel initInputComponent() {
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new BorderLayout());
-        inputPanel.add(new JLabel(" Input RegExp "), BorderLayout.WEST);
+        JLabel inputLabel = new JLabel(" Input RegExp ");
+        inputLabel.setFont( font );
+        inputPanel.add( inputLabel, BorderLayout.WEST);
+        regexpField.setFont( font );
         inputPanel.add(regexpField, BorderLayout.CENTER);
+
         return inputPanel;
     }
 
