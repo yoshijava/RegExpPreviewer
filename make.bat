@@ -1,1 +1,2 @@
-javac src\main\java\*.java -d out
+if not exist out mkdir out
+javac -d out src\main\java\*.java 
