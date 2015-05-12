@@ -10,7 +10,7 @@ public class RegExpPreviewer extends JFrame implements Runnable {
     JLabel statusLabel = new JLabel("Status: Healthy.");
     JTextField regexpField = new JTextField();
     JTextPane contentToMatch = new JTextPane();
-
+    Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 18);
     DefaultHighlighter.DefaultHighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
 
     public RegExpPreviewer() {
@@ -39,6 +39,7 @@ public class RegExpPreviewer extends JFrame implements Runnable {
                 SwingUtilities.invokeLater(RegExpPreviewer.this);
             }
         });
+        contentToMatch.setFont(font);
         return contentToMatch;
     }
 
@@ -58,7 +59,7 @@ public class RegExpPreviewer extends JFrame implements Runnable {
                 // }
                 int index = 0;
                 if( (index = content.indexOf(group, prevIndex)) != -1) {
-                    contentToMatch.getHighlighter().addHighlight(index, index + group.length(), DefaultHighlighter.DefaultPainter);
+                    contentToMatch.getHighlighter().addHighlight(index, index + group.length(), highlightPainter);
                     prevIndex = index + group.length();
                 }
             }
