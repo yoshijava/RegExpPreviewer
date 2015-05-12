@@ -8,9 +8,10 @@ import javax.swing.text.*;
 
 public class RegExpPreviewer extends JFrame implements Runnable {
     JLabel statusLabel;
-    JTextField regexpField;
     JTextPane contentToMatch;
     JPanel inputPanel;
+    JTextField regexpField;
+    
     Font font18 = new Font(Font.SANS_SERIF, Font.PLAIN, 18);
     Font font16 = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
 
@@ -34,7 +35,6 @@ public class RegExpPreviewer extends JFrame implements Runnable {
     private void initMembers() {
         statusLabel = new JLabel("Status: Healthy.");
         statusLabel.setFont( font16 );
-        regexpField = new JTextField();
         contentToMatch = new JTextPane();
         highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
         contentToMatch.setText("Paste your text here");
@@ -97,10 +97,13 @@ public class RegExpPreviewer extends JFrame implements Runnable {
     private JPanel initInputPanel() {
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new BorderLayout());
+
         JLabel inputLabel = new JLabel(" Input RegExp ");
         inputLabel.setFont( font18 );
-        inputPanel.add( inputLabel, BorderLayout.WEST);
+        regexpField = new JTextField();
         regexpField.setFont( font18 );
+
+        inputPanel.add( inputLabel, BorderLayout.WEST);
         inputPanel.add(regexpField, BorderLayout.CENTER);
         return inputPanel;
     }
