@@ -9,7 +9,9 @@ import javax.swing.text.*;
 public class RegExpPreviewer extends JFrame implements Runnable {
     JLabel statusLabel = new JLabel("Status: Healthy.");
     JTextField regexpField = new JTextField();
-    JTextArea contentToMatch = new JTextArea();
+    JTextPane contentToMatch = new JTextPane();
+
+    DefaultHighlighter.DefaultHighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
 
     public RegExpPreviewer() {
         super("RegExp Previewer");
@@ -17,7 +19,7 @@ public class RegExpPreviewer extends JFrame implements Runnable {
         Container container = getContentPane();
         // container.setLayout(new BorderLayout());
         container.add( initInputComponent(), BorderLayout.SOUTH);
-        container.add( new JScrollPane(initTextArea()), BorderLayout.CENTER);
+        container.add( new JScrollPane(initJTextPane()), BorderLayout.CENTER);
         container.add( statusLabel, BorderLayout.NORTH);
         regexpField.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
@@ -29,9 +31,9 @@ public class RegExpPreviewer extends JFrame implements Runnable {
         setVisible(true);
     }
 
-    private JTextArea initTextArea() {
+    private JTextPane initJTextPane() {
         contentToMatch.setText("Paste your text here");
-        contentToMatch.setLineWrap(true);
+        // contentToMatch.setLineWrap(true);
         contentToMatch.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
                 SwingUtilities.invokeLater(RegExpPreviewer.this);
@@ -44,21 +46,20 @@ public class RegExpPreviewer extends JFrame implements Runnable {
         String regexp = regexpField.getText();
         String content = contentToMatch.getText();
         Vector<String> result = new Vector<String>();
-        Highlighter h = contentToMatch.getHighlighter();
-        h.removeAllHighlights();
-        int prevIndex = -1;
+        contentToMatch.getHighlighter().removeAllHighlights();
+        int prevIndex = 0;
         try {
             Pattern p = Pattern.compile(regexp);
             Matcher m = p.matcher(content);
             while(m.find()) {
                 String group = m.group();
-                if (group.trim().equals("")) {
-                    continue;
-                }
+                // if (group.trim().equals("")) {
+                //     continue;
+                // }
                 int index = 0;
-                while( (index = content.indexOf(group, prevIndex + 1)) != -1) {
-                    h.addHighlight(index, index + group.length(), DefaultHighlighter.DefaultPainter);
-                    prevIndex = index;
+                if( (index = content.indexOf(group, prevIndex)) != -1) {
+                    contentToMatch.getHighlighter().addHighlight(index, index + group.length(), DefaultHighlighter.DefaultPainter);
+                    prevIndex = index + group.length();
                 }
             }
             statusLabel.setText("Status: Healthy.");
