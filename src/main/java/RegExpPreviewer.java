@@ -74,7 +74,7 @@ public class RegExpPreviewer extends Application {
 
         installEventHandler(contentToMatch);
         installEventHandler(regexpField);
-        primaryStage.setTitle("Hello World!");
+        primaryStage.setTitle("RegExpPreviewer");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
